@@ -7,8 +7,8 @@ function FacilityItem({ facility }) {
       <p>{facility.description}</p>
       <p>Grad: {facility.city}</p>
       <p>Discipline: {facility.disciplines.join(', ')}</p>
-      <p>Broj recenzija: {facility.review_count}</p>
-      <p>Prosečna ocena: {facility.avg_equipment_grade}</p>
+      <p>Broj recenzija: {facility.reviewCount}</p>
+      <p>Prosečna ocena: {facility.avgEquipmentGrade}</p>
     </div>
   );
 }
