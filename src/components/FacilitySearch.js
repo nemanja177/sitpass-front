@@ -5,6 +5,7 @@ function FacilitySearch({ onSearch }) {
 
   const handleSubmit = e => {
     e.preventDefault();
+    console.log("Search filters:", { query, page: 0, size: 10 });
     onSearch({ query, page: 0, size: 10 });
   };
 
