@@ -16,9 +16,12 @@ function FacilitySearchPage() {
     descriptionSearchType: 'match',
     minReview: '',
     maxReview: '',
-    minRating: '',
-    maxRating: '',
+    avgGradeCategory: 'equipment', 
+    minAvgRating: '',
+    maxAvgRating: '',
     booleanOperator: 'AND',
+    sortField: '', 
+    sortOrder: 'asc', 
     page: 0,
     size: 10,
   });
@@ -37,16 +40,19 @@ function FacilitySearchPage() {
       descriptionSearchType,
       minReview,
       maxReview,
-      minRating,
-      maxRating,
+      avgGradeCategory,
+      minAvgRating,
+      maxAvgRating,
       booleanOperator,
+      sortField,
+      sortOrder,
       page,
       size,
     } = searchFilters;
-
+  
     let url = '';
     let body = {};
-
+  
     if (mode === 'basic') {
       url = `http://localhost:8080/api/facilities/basicsearch?page=${page}&size=${size}`;
       body = {
@@ -61,23 +67,26 @@ function FacilitySearchPage() {
         descriptionSearchType,
         minReviewCount: minReview ? parseInt(minReview, 10) : null,
         maxReviewCount: maxReview ? parseInt(maxReview, 10) : null,
-        minAvgRating: minRating ? parseFloat(minRating) : null,
-        maxAvgRating: maxRating ? parseFloat(maxRating) : null,
-        booleanOperator,
+        avgGradeCategory,
+        minAvgRating: minAvgRating !== '' && minAvgRating != null ? parseFloat(minAvgRating) : null,
+        maxAvgRating: maxAvgRating !== '' && maxAvgRating != null ? parseFloat(maxAvgRating) : null,
+        sortField,
+        sortOrder,
+        textSearchOperator: booleanOperator,
       };
     }
-
+  
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-
+  
     if (!res.ok) {
       console.error('Greška prilikom pretrage');
       return;
     }
-
+  
     const data = await res.json();
     setFacilities(data.content || []);
     setTotalPages(data.totalPages || 0);

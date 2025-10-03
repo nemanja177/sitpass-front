@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 
 function FacilitySearch({ onSearch }) {
-  const [mode, setMode] = useState('basic'); // 'basic' ili 'advanced'
+  const [mode, setMode] = useState('basic');
 
-  // Za Basic pretragu
+  // Basic 
   const [basicText, setBasicText] = useState('');
 
-  // Za Advanced pretragu
+  // Advnaced 
   const [name, setName] = useState('');
   const [nameSearchType, setNameSearchType] = useState('match');
   const [description, setDescription] = useState('');
   const [descriptionSearchType, setDescriptionSearchType] = useState('match');
   const [minReview, setMinReview] = useState('');
   const [maxReview, setMaxReview] = useState('');
-  const [minRating, setMinRating] = useState('');
-  const [maxRating, setMaxRating] = useState('');
   const [booleanOperator, setBooleanOperator] = useState('AND');
+
+  const [avgGradeCategory, setAvgGradeCategory] = useState('equipment');
+  const [minAvgRating, setMinAvgRating] = useState('');
+  const [maxAvgRating, setMaxAvgRating] = useState('');
+
+  const [sortField, setSortField] = useState(''); 
+  const [sortOrder, setSortOrder] = useState('asc');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,9 +41,12 @@ function FacilitySearch({ onSearch }) {
         descriptionSearchType,
         minReview: minReview ? parseInt(minReview, 10) : null,
         maxReview: maxReview ? parseInt(maxReview, 10) : null,
-        minRating: minRating ? parseFloat(minRating) : null,
-        maxRating: maxRating ? parseFloat(maxRating) : null,
         booleanOperator,
+        avgGradeCategory,
+        minAvgRating: minAvgRating !== '' ? parseFloat(minAvgRating) : null,
+        maxAvgRating: maxAvgRating !== '' ? parseFloat(maxAvgRating) : null,
+        sortField: sortField || null, 
+        sortOrder,
         page: 0,
         size: 10,
       });
@@ -146,22 +154,35 @@ function FacilitySearch({ onSearch }) {
 
           <div style={{ marginTop: '10px' }}>
             <label>
-              Min Ocena:
+              Kategorija prosečne ocene:&nbsp;
+              <select
+                value={avgGradeCategory}
+                onChange={e => setAvgGradeCategory(e.target.value)}
+                style={{ padding: '5px', marginRight: '8px' }}
+              >
+                <option value="equipment">Oprema</option>
+                <option value="staff">Osoblje</option>
+                <option value="hygiene">Higijena</option>
+                <option value="space">Prostor</option>
+              </select>
+            </label>
+            <label>
+              Min prosek:
               <input
                 type="number"
                 step="0.1"
-                value={minRating}
-                onChange={e => setMinRating(e.target.value)}
+                value={minAvgRating}
+                onChange={e => setMinAvgRating(e.target.value)}
                 style={{ width: '80px', marginLeft: '5px', marginRight: '10px' }}
               />
             </label>
             <label>
-              Max Ocena:
+              Max prosek:
               <input
                 type="number"
                 step="0.1"
-                value={maxRating}
-                onChange={e => setMaxRating(e.target.value)}
+                value={maxAvgRating}
+                onChange={e => setMaxAvgRating(e.target.value)}
                 style={{ width: '80px', marginLeft: '5px' }}
               />
             </label>
@@ -179,6 +200,35 @@ function FacilitySearch({ onSearch }) {
                 <option value="OR">OR</option>
               </select>
             </label>
+          </div>
+
+          <div style={{ marginTop: '15px', borderTop: '1px dashed #ccc', paddingTop: '10px' }}>
+              <label>
+                  Sortiraj po:
+                  <select
+                      value={sortField}
+                      onChange={e => setSortField(e.target.value)}
+                      style={{ padding: '5px', marginRight: '10px' }}
+                  >
+                      <option value="">-- Bez sortiranja --</option>
+                      <option value="name">Naziv</option>
+                      <option value="reviewCount">Broj recenzija</option>
+                  </select>
+              </label>
+              
+              {sortField && (
+                  <label>
+                      Smer:&nbsp;
+                      <select
+                          value={sortOrder}
+                          onChange={e => setSortOrder(e.target.value)}
+                          style={{ padding: '5px' }}
+                      >
+                          <option value="asc">Rastuće (ASC)</option>
+                          <option value="desc">Opadajuće (DESC)</option>
+                      </select>
+                  </label>
+              )}
           </div>
 
           <div style={{ marginTop: '15px' }}>
