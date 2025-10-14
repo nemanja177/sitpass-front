@@ -2,8 +2,16 @@ import React, { useState, useEffect } from 'react';
 import FacilitySearch from '../components/FacilitySearch';
 import FacilityList from '../components/FacilityList';
 import Pagination from '../components/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 function FacilitySearchPage() {
+
+  const navigate = useNavigate();
+
+      const goToCreateFacility = () => {
+          navigate('/create-facility');
+      };
+
   const [facilities, setFacilities] = useState([]);
   const [filters, setFilters] = useState({
     mode: 'basic',
@@ -108,6 +116,8 @@ function FacilitySearchPage() {
 
   return (
     <div style={{ padding: '20px' }}>
+      <h1>Kreacija Objekta</h1>
+      <button onClick={goToCreateFacility}>Create New Facility</button>
       <h1>Pretraga objekata</h1>
       <FacilitySearch onSearch={handleSearch} />
       <FacilityList facilities={facilities} />

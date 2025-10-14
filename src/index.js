@@ -8,7 +8,7 @@ import FacilitySearchPage from './pages/FacilitySearchPage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <FacilitySearchPage />
+    <App />
   </React.StrictMode>
 );
 
